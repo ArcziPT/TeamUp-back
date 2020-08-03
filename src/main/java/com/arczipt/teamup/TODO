@@ -1,0 +1,5 @@
+Model:
+    -cascade
+
+DTO:
+    -use MapStruct to automatically map entities to DTOs
