@@ -14,10 +14,12 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "app_posting_id")
     private JobPosting jobPosting;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "app_user_id")
     private User applicant;
 
     @Enumerated

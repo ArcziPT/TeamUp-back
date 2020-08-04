@@ -15,13 +15,16 @@ public class ProjectInvitation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "invitation_project_id")
     private Project project;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "invitation_role_id")
     private ProjectRole role;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "invitation_user_id")
     private User user;
 
     @Enumerated

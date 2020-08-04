@@ -20,7 +20,7 @@ public class Project {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<ProjectMember> members;
 
     @ElementCollection
@@ -29,9 +29,9 @@ public class Project {
     private String briefDescription;
     private String description;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<JobPosting> jobPostings;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<ProjectInvitation> invitations;
 }

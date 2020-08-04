@@ -27,7 +27,7 @@ public class User {
     private String surname;
     private String email;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_skills",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
@@ -40,27 +40,30 @@ public class User {
 
     private Integer rating;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ProjectMember> projectMember;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_raters",
     joinColumns = @JoinColumn(name = "rating_user_id"),
     inverseJoinColumns = @JoinColumn(name = "rated_user_id"))
     private List<User> ratedBy;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_raters",
             inverseJoinColumns = @JoinColumn(name = "rating_user_id"),
             joinColumns = @JoinColumn(name = "rated_user_id"))
     private List<User> ratedUsers;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "applicant")
     private List<JobApplication> applications;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ProjectInvitation> projectInvitations;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "user_privilege",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "privilege_id"))
     private List<Privilege> privileges;
 }

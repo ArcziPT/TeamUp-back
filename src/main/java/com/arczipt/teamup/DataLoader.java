@@ -55,25 +55,14 @@ public class DataLoader implements ApplicationRunner {
         role.setDescription("new athlete");
         projectRoleRepository.save(role);
 
-        ProjectMember member = new ProjectMember();
-        member.setProject(null);
-        member.setRole(role);
-        member.setUser(null);
-        member.setAdmin(false);
-        projectMemberRepository.save(member);
-
         Project project = new Project();
         project.setBriefDescription("project description");
         project.setDescription("longer project description");
         project.setInvitations(new ArrayList<>());
         project.setJobPostings(new ArrayList<>());
-        project.setMembers(Collections.singletonList(member));
         project.setName("PROJECT123");
         project.setUrls(Arrays.asList("github.com/p123", "mojastrona.com"));
         projectRepository.save(project);
-
-        member.setProject(project);
-        projectMemberRepository.save(member);
 
         User user = new User();
         user.setRating(123);
@@ -84,7 +73,6 @@ public class DataLoader implements ApplicationRunner {
         user.setEmail("user@mail.com");
         user.setFirstName("John");
         user.setProjectInvitations(new ArrayList<>());
-        user.setProjectMember(Collections.singletonList(member));
         user.setRatedBy(new ArrayList<>());
         user.setRatedUsers(new ArrayList<>());
         user.setSkills(Arrays.asList(s1, s2, s3, s4));
@@ -93,7 +81,11 @@ public class DataLoader implements ApplicationRunner {
         user.setUsername("user123");
         userRepository.save(user);
 
+        ProjectMember member = new ProjectMember();
+        member.setProject(project);
+        member.setRole(projectRoleRepository.findByRole("ATHLETE"));
         member.setUser(user);
+        member.setAdmin(false);
         projectMemberRepository.save(member);
     }
 }
