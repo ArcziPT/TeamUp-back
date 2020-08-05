@@ -9,15 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 public class ProjectDTO {
-    public ProjectDTO(Project project){
-        name = project.getName();
-        briefDescription = project.getBriefDescription();
-        description = project.getDescription();
-        urls = project.getUrls();
-    }
-
     private String name;
     private String briefDescription;
     private String description;
     private List<String> urls;
+    private List<String> members;
+    private List<String> postings;
 }

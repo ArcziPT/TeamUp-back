@@ -6,6 +6,7 @@ import com.arczipt.teamup.model.Project;
 import com.arczipt.teamup.model.ProjectRole;
 import lombok.Generated;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.ManyToOne;
@@ -14,18 +15,10 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class JobPostingDTO {
-
-    public JobPostingDTO(JobPosting jobPosting){
-        this.projectName = jobPosting.getProject().getName();
-        this.title = jobPosting.getTitle();
-        this.projectRole = jobPosting.getRole().getRole();
-
-        this.applicationsCount = jobPosting.getApplications().size();
-    }
-
     private String title;
     private String projectName;
-    private String projectRole;
+    private RoleDTO role;
     private Integer applicationsCount;
 }

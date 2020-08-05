@@ -1,5 +1,6 @@
 package com.arczipt.teamup.service;
 
+import com.arczipt.teamup.mapper.JobApplicationMapper;
 import com.arczipt.teamup.model.ApplicationStatus;
 import com.arczipt.teamup.dto.JobApplicationDTO;
 import com.arczipt.teamup.model.InvitationStatus;
@@ -24,7 +25,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
     @Override
     public JobApplicationDTO findById(Long id) {
-        return jobApplicationRepository.findById(id).map(JobApplicationDTO::new).orElseGet(() -> null);
+        return jobApplicationRepository.findById(id).map(JobApplicationMapper.INSTANCE::mapToJobApplicationDTO).orElseGet(() -> null);
     }
 
     /**

@@ -1,5 +1,9 @@
 package com.arczipt.teamup.service;
 
+import com.arczipt.teamup.mapper.JobPostingMapper;
+import com.arczipt.teamup.mapper.ProjectInvitationMapper;
+import com.arczipt.teamup.mapper.ProjectMapper;
+import com.arczipt.teamup.mapper.UserMapper;
 import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.dto.*;
 import com.arczipt.teamup.repo.*;
@@ -39,31 +43,35 @@ public class ProjectServiceImpl implements ProjectService{
     public ProjectDTO findById(Long id) {
         Optional<Project> op = projectRepository.findById(id);
 
-        //TODO error handling
-        return op.map(ProjectDTO::new).orElseGet(() -> null);
+        if(op.isEmpty())
+            return null;
 
+        return ProjectMapper.INSTANCE.mapToProjectDTO(op.get());
     }
 
     @Override
     public ProjectDTO findByName(String name) {
-        return new ProjectDTO(projectRepository.findProjectByName(name));
+        return ProjectMapper.INSTANCE.mapToProjectDTO(projectRepository.findProjectByName(name));
     }
 
     @Override
     public ArrayList<ProjectMinDTO> findWithNameLike(String pattern) {
-        return (ArrayList<ProjectMinDTO>) projectRepository.findWithNameLike(pattern).stream().map(ProjectMinDTO::new).collect(Collectors.toList());
+        return (ArrayList<ProjectMinDTO>) projectRepository.findWithNameLike(pattern).stream().map(ProjectMapper.INSTANCE::mapToProjectMinDTO).collect(Collectors.toList());
     }
 
     @Override
     public ArrayList<UserMinDTO> getMembers(Long id) {
         Optional<Project> op =  projectRepository.findById(id);
 
-        return op.map(project -> (ArrayList<UserMinDTO>) project.getMembers().stream().map(ProjectMember::getUser).map(UserMinDTO::new).collect(Collectors.toList())).orElse(null);
+        if(op.isEmpty())
+            return null;
+
+        return (ArrayList<UserMinDTO>) op.get().getMembers().stream().map(ProjectMember::getUser).map(UserMapper.INSTANCE::mapToUserMinDTO).collect(Collectors.toList());
     }
 
     @Override
     public void sendInvitation(ProjectInvitationDTO projectInvitationDTO) {
-        ProjectRole role = projectRoleRepository.findByRole(projectInvitationDTO.getRole());
+        ProjectRole role = projectRoleRepository.findByName(projectInvitationDTO.getRole().getName());
 
         if(role == null){
             //error
@@ -82,19 +90,19 @@ public class ProjectServiceImpl implements ProjectService{
     public ArrayList<ProjectInvitationMinDTO> getInvitations(Long id) {
         Optional<Project> op = projectRepository.findById(id);
 
-        return op.map(project -> (ArrayList<ProjectInvitationMinDTO>) project.getInvitations().stream().map(ProjectInvitationMinDTO::new).collect(Collectors.toList())).orElse(null);
+        return op.map(project -> (ArrayList<ProjectInvitationMinDTO>) project.getInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationMinDTO).collect(Collectors.toList())).orElse(null);
     }
 
     @Override
     public ArrayList<JobPostingDTO> getJobPostings(Long id) {
-        return (ArrayList<JobPostingDTO>) projectRepository.findById(id).map(project -> project.getJobPostings().stream().map(JobPostingDTO::new).collect(Collectors.toList())).orElseGet(null);
+        return (ArrayList<JobPostingDTO>) projectRepository.findById(id).map(project -> project.getJobPostings().stream().map(JobPostingMapper.INSTANCE::mapToJobPostingDTO).collect(Collectors.toList())).orElseGet(null);
     }
 
     @Override
     public void addJobPosting(Long id, JobPostingCreateDTO jobPosting) {
         JobPosting posting = new JobPosting();
         posting.setApplications(new ArrayList<>());
-        posting.setRole(projectRoleRepository.findByRole(jobPosting.getRole()));
+        posting.setRole(projectRoleRepository.findByName(jobPosting.getRole()));
         posting.setTitle(jobPosting.getTitle());
 
         projectRepository.findById(id).ifPresent(posting::setProject);

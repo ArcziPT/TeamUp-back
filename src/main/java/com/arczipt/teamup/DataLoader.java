@@ -1,5 +1,6 @@
 package com.arczipt.teamup;
 
+import com.arczipt.teamup.mapper.UserMapper;
 import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class DataLoader implements ApplicationRunner {
         skillRepository.save(s4);
 
         ProjectRole role = new ProjectRole();
-        role.setRole("ATHLETE");
+        role.setName("ATHLETE");
         role.setSkills(Arrays.asList(s1, s2));
         role.setDescription("new athlete");
         projectRoleRepository.save(role);
@@ -83,7 +84,7 @@ public class DataLoader implements ApplicationRunner {
 
         ProjectMember member = new ProjectMember();
         member.setProject(project);
-        member.setRole(projectRoleRepository.findByRole("ATHLETE"));
+        member.setRole(projectRoleRepository.findByName("ATHLETE"));
         member.setUser(user);
         member.setAdmin(false);
         projectMemberRepository.save(member);

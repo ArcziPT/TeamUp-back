@@ -1,14 +1,16 @@
 package com.arczipt.teamup.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.management.relation.Role;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProjectMemberDTO {
     private String user;
-    private String role;
-    private String description;
-    private List<String> skills;
+    private RoleDTO role;
 }

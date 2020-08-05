@@ -2,6 +2,9 @@ package com.arczipt.teamup.service;
 
 import com.arczipt.teamup.dto.JobPostingCreateDTO;
 import com.arczipt.teamup.dto.ProjectInvitationDTO;
+import com.arczipt.teamup.dto.RoleDTO;
+import com.arczipt.teamup.mapper.ProjectInvitationMapper;
+import com.arczipt.teamup.mapper.ProjectRoleMappper;
 import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.repo.*;
 import org.junit.Test;
@@ -46,17 +49,18 @@ public class ProjectServiceTest {
         User user = new User((long) 1, "my_user", "hash", "firstName", "surname", "email", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
         ProjectRole role = new ProjectRole((long) 1, "my_role", "role desc", new ArrayList<>());
-        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO("my_project", "my_role", new ArrayList<>(), "my_user");
+        RoleDTO roleDTO = ProjectRoleMappper.INSTANCE.mapToRoleDTO(role);
+        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO("my_project", roleDTO, "my_user", InvitationStatus.WAITING.name());
 
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(projectRepository.findProjectByName(project.getName())).thenReturn(project);
-        Mockito.when(projectRoleRepository.findByRole(role.getRole())).thenReturn(role);
+        Mockito.when(projectRoleRepository.findByName(role.getName())).thenReturn(role);
         Mockito.when(projectInvitationRepository.save(Mockito.any())).thenAnswer(new Answer<ProjectInvitation>() {
             @Override
             public ProjectInvitation answer(InvocationOnMock invocationOnMock) throws Throwable {
                 ProjectInvitation saved = (ProjectInvitation) invocationOnMock.getArguments()[0];
 
-                assertThat(new ProjectInvitationDTO(saved)).isEqualToComparingFieldByField(projectInvitationDTO); //actual test
+                assertThat(ProjectInvitationMapper.INSTANCE.mapToProjectInvitationDTO(saved)).isEqualToComparingFieldByField(projectInvitationDTO); //actual test
                 return saved;
             }
         });
@@ -74,12 +78,12 @@ public class ProjectServiceTest {
         JobPostingCreateDTO postingDTO = new JobPostingCreateDTO("team position", "my_role");
 
         Mockito.when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-        Mockito.when(projectRoleRepository.findByRole(role.getRole())).thenReturn(role);
+        Mockito.when(projectRoleRepository.findByName(role.getName())).thenReturn(role);
         Mockito.when(jobPostingRepository.save(Mockito.any())).thenAnswer(new Answer<JobPosting>() {
             @Override
             public JobPosting answer(InvocationOnMock invocationOnMock) throws Throwable {
                 JobPosting jobPosting = (JobPosting) invocationOnMock.getArguments()[0];
-                JobPostingCreateDTO saved = new JobPostingCreateDTO(jobPosting.getTitle(), jobPosting.getRole().getRole());
+                JobPostingCreateDTO saved = new JobPostingCreateDTO(jobPosting.getTitle(), jobPosting.getRole().getName());
 
                 assertThat(saved).isEqualToComparingFieldByField(postingDTO);
                 return jobPosting;

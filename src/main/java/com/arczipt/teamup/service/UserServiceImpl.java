@@ -1,6 +1,10 @@
 package com.arczipt.teamup.service;
 
 import com.arczipt.teamup.dto.*;
+import com.arczipt.teamup.mapper.JobApplicationMapper;
+import com.arczipt.teamup.mapper.ProjectInvitationMapper;
+import com.arczipt.teamup.mapper.ProjectMapper;
+import com.arczipt.teamup.mapper.UserMapper;
 import com.arczipt.teamup.model.Project;
 import com.arczipt.teamup.model.ProjectMember;
 import com.arczipt.teamup.model.User;
@@ -26,12 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findById(Long id) {
-        return userRepository.findById(id).map(UserDTO::new).orElseThrow();
+        Optional<User> op = userRepository.findById(id);
+
+        if(op.isEmpty())
+            return null;
+
+        return UserMapper.INSTANCE.mapToUserDTO(op.get());
     }
 
     @Override
     public UserDTO findByUsername(String username) {
-        return new UserDTO(userRepository.findUserByUsername(username));
+        return UserMapper.INSTANCE.mapToUserDTO(userRepository.findUserByUsername(username));
     }
 
     /**
@@ -42,12 +51,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ArrayList<UserMinDTO> findWithUsernameLike(String pattern, Pageable pageable) {
-        return (ArrayList<UserMinDTO>) userRepository.findUsersWithUsernameLike(pattern, pageable).stream().map(UserMinDTO::new).collect(Collectors.toList());
+        return (ArrayList<UserMinDTO>) userRepository.findUsersWithUsernameLike(pattern, pageable).stream().map(UserMapper.INSTANCE::mapToUserMinDTO).collect(Collectors.toList());
     }
 
     @Override
     public ArrayList<UserMinDTO> findBySkillName(String skillName, Pageable pageable) {
-        return (ArrayList<UserMinDTO>) userRepository.findUsersBySkillName(skillName, pageable).stream().map(UserMinDTO::new).collect(Collectors.toList());
+        return (ArrayList<UserMinDTO>) userRepository.findUsersBySkillName(skillName, pageable).stream().map(UserMapper.INSTANCE::mapToUserMinDTO).collect(Collectors.toList());
     }
 
     private boolean isRatedBy(User user, String raterUsername){
@@ -104,16 +113,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ArrayList<JobApplicationDTO> getJobApplications(String username){
         User user = userRepository.findUserByUsername(username);
-        return (ArrayList<JobApplicationDTO>) user.getApplications().stream().map(JobApplicationDTO::new).collect(Collectors.toList());
+        return (ArrayList<JobApplicationDTO>) user.getApplications().stream().map(JobApplicationMapper.INSTANCE::mapToJobApplicationDTO).collect(Collectors.toList());
     }
 
     @Override
     public ArrayList<ProjectMinDTO> getProjects(String username) {
-        return (ArrayList<ProjectMinDTO>) userRepository.findUserByUsername(username).getProjectMember().stream().map(ProjectMember::getProject).map(ProjectMinDTO::new).collect(Collectors.toList());
+        return (ArrayList<ProjectMinDTO>) userRepository.findUserByUsername(username).getProjectMember().stream().map(ProjectMember::getProject).map(ProjectMapper.INSTANCE::mapToProjectMinDTO).collect(Collectors.toList());
     }
 
     @Override
     public ArrayList<ProjectInvitationMinDTO> getInvitations(String username) {
-        return (ArrayList<ProjectInvitationMinDTO>) userRepository.findUserByUsername(username).getProjectInvitations().stream().map(ProjectInvitationMinDTO::new).collect(Collectors.toList());
+        return (ArrayList<ProjectInvitationMinDTO>) userRepository.findUserByUsername(username).getProjectInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationMinDTO).collect(Collectors.toList());
     }
 }

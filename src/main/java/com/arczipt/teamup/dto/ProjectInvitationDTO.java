@@ -16,19 +16,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectInvitationDTO {
-
-    public ProjectInvitationDTO(ProjectInvitation inv){
-        projectName = inv.getProject().getName();
-        role = inv.getRole().getRole();
-        skills = inv.getRole().getSkills().stream().map(Skill::getName).collect(Collectors.toList());
-        username = inv.getUser().getUsername();
-    }
-
     private String projectName;
-
-    private String role;
-
-    private List<String> skills;
-
+    private RoleDTO role;
     private String username;
+    private String status;
 }

@@ -1,6 +1,7 @@
 package com.arczipt.teamup.service;
 
 import com.arczipt.teamup.dto.ProjectInvitationDTO;
+import com.arczipt.teamup.mapper.ProjectInvitationMapper;
 import com.arczipt.teamup.model.InvitationStatus;
 import com.arczipt.teamup.model.ProjectMember;
 import com.arczipt.teamup.repo.ProjectInvitationRepository;
@@ -23,7 +24,7 @@ public class ProjectInvitationServiceImpl implements ProjectInvitationService {
 
     @Override
     public ProjectInvitationDTO getInvitation(Long id) {
-        return projectInvitationRepository.findById(id).map(ProjectInvitationDTO::new).orElseGet(null);
+        return projectInvitationRepository.findById(id).map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationDTO).orElseGet(null);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class ProjectRole {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String role;
+    private String name;
 
     private String description;
 
