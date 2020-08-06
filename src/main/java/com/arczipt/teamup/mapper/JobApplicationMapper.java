@@ -14,7 +14,7 @@ public interface JobApplicationMapper {
     JobApplicationMapper INSTANCE = Mappers.getMapper(JobApplicationMapper.class);
 
     @Mapping(target = "title", source = "jobPosting.title")
-    @Mapping(target = "username", source = "applicant.username")
+    @Mapping(target = "user", source = "applicant")
     @Mapping(target = "status", source = "status")
     JobApplicationDTO mapToJobApplicationDTO(JobApplication application);
 

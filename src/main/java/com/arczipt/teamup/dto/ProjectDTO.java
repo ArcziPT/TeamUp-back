@@ -13,6 +13,6 @@ public class ProjectDTO {
     private String briefDescription;
     private String description;
     private List<String> urls;
-    private List<String> members;
-    private List<String> postings;
+    private List<NameAndLinkDTO> members;
+    private List<NameAndLinkDTO> postings;
 }

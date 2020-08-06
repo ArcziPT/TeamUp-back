@@ -1,8 +1,6 @@
 package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.dto.ProjectInvitationDTO;
-import com.arczipt.teamup.dto.ProjectInvitationMinDTO;
-import com.arczipt.teamup.model.Project;
 import com.arczipt.teamup.model.ProjectInvitation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,15 +11,9 @@ public interface ProjectInvitationMapper {
 
     ProjectInvitationMapper INSTANCE = Mappers.getMapper(ProjectInvitationMapper.class);
 
-    @Mapping(target = "projectName", source = "project.name")
+    @Mapping(target = "project", source = "project")
     @Mapping(target = "role", source = "role")
-    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "user", source = "user")
     @Mapping(target = "status", source = "status")
     ProjectInvitationDTO mapToProjectInvitationDTO(ProjectInvitation invitation);
-
-    @Mapping(target = "projectName", source = "project.name")
-    @Mapping(target = "role", source = "role.name")
-    @Mapping(target = "username", source = "user.username")
-    @Mapping(target = "status", source = "status")
-    ProjectInvitationMinDTO mapToProjectInvitationMinDTO(ProjectInvitation invitation);
 }

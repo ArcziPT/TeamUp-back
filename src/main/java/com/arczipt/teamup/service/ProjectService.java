@@ -16,7 +16,7 @@ public interface ProjectService {
 
     void sendInvitation(ProjectInvitationDTO projectInvitationDTO);
 
-    ArrayList<ProjectInvitationMinDTO> getInvitations(Long id);
+    ArrayList<ProjectInvitationDTO> getInvitations(Long id);
 
     ArrayList<JobPostingDTO> getJobPostings(Long id);
 

@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JobPostingDTO {
     private String title;
-    private String projectName;
+    private NameAndLinkDTO project;
     private RoleDTO role;
     private Integer applicationsCount;
 }

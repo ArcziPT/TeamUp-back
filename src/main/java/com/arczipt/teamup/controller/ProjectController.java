@@ -81,7 +81,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/invitations")
-    public ArrayList<ProjectInvitationMinDTO> getInvitations(@PathVariable Long id){
+    public ArrayList<ProjectInvitationDTO> getInvitations(@PathVariable Long id){
         return projectService.getInvitations(id);
     }
 
@@ -94,5 +94,10 @@ public class ProjectController {
     @GetMapping("/{id}/postings")
     public ArrayList<JobPostingDTO> getJobPostings(@PathVariable Long id){
         return projectService.getJobPostings(id);
+    }
+
+    @GetMapping("/{projectId}/postings/{postingId}")
+    public ArrayList<JobPostingDTO> getJobPosting(@PathVariable Long projectId, @PathVariable Long postingId){
+        return new ArrayList<>();//TODO
     }
 }

@@ -79,18 +79,18 @@ public class ProjectServiceImpl implements ProjectService{
 
         ProjectInvitation invitation = new ProjectInvitation();
         invitation.setStatus(InvitationStatus.WAITING);
-        invitation.setProject(projectRepository.findProjectByName(projectInvitationDTO.getProjectName()));
+        invitation.setProject(projectRepository.findProjectByName(projectInvitationDTO.getProject().getName()));
         invitation.setRole(role);
-        invitation.setUser(userRepository.findUserByUsername(projectInvitationDTO.getUsername()));
+        invitation.setUser(userRepository.findUserByUsername(projectInvitationDTO.getUser().getName()));
 
         projectInvitationRepository.save(invitation);
     }
 
     @Override
-    public ArrayList<ProjectInvitationMinDTO> getInvitations(Long id) {
+    public ArrayList<ProjectInvitationDTO> getInvitations(Long id) {
         Optional<Project> op = projectRepository.findById(id);
 
-        return op.map(project -> (ArrayList<ProjectInvitationMinDTO>) project.getInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationMinDTO).collect(Collectors.toList())).orElse(null);
+        return op.map(project -> (ArrayList<ProjectInvitationDTO>) project.getInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationDTO).collect(Collectors.toList())).orElse(null);
     }
 
     @Override

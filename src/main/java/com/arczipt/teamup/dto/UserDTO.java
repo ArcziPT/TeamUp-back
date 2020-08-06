@@ -25,5 +25,5 @@ public class UserDTO {
     private List<String> urls;
     private String description;
     private Integer rating;
-    private List<String> projects;
+    private List<NameAndLinkDTO> projects;
 }

@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ProjectMemberDTO {
-    private String user;
+    private NameAndLinkDTO user;
     private RoleDTO role;
 }

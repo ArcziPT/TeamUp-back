@@ -23,7 +23,7 @@ public class UserMinDTO {
     private String username;
     private List<String> skills;
     private Integer rating;
-    private List<String> projects;
+    private List<NameAndLinkDTO> projects;
 
     @Override
     public String toString() {

@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProjectMinDTO {
-    private String name;
+    private NameAndLinkDTO name;
     private String briefDescription;
 }

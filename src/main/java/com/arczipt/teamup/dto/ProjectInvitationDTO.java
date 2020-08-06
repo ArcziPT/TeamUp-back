@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectInvitationDTO {
-    private String projectName;
+    private NameAndLinkDTO project;
     private RoleDTO role;
-    private String username;
+    private NameAndLinkDTO user;
     private String status;
 }

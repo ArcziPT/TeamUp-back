@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JobApplicationDTO {
     private String title;
-    private String username;
+    private NameAndLinkDTO user;
     private String status;
 }

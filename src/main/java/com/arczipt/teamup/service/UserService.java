@@ -24,5 +24,5 @@ public interface UserService {
 
     ArrayList<ProjectMinDTO> getProjects(String username);
 
-    ArrayList<ProjectInvitationMinDTO> getInvitations(String username);
+    ArrayList<ProjectInvitationDTO> getInvitations(String username);
 }

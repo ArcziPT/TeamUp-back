@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<ProjectInvitationMinDTO> getInvitations(String username) {
-        return (ArrayList<ProjectInvitationMinDTO>) userRepository.findUserByUsername(username).getProjectInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationMinDTO).collect(Collectors.toList());
+    public ArrayList<ProjectInvitationDTO> getInvitations(String username) {
+        return (ArrayList<ProjectInvitationDTO>) userRepository.findUserByUsername(username).getProjectInvitations().stream().map(ProjectInvitationMapper.INSTANCE::mapToProjectInvitationDTO).collect(Collectors.toList());
     }
 }

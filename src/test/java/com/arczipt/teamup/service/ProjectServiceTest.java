@@ -1,6 +1,7 @@
 package com.arczipt.teamup.service;
 
 import com.arczipt.teamup.dto.JobPostingCreateDTO;
+import com.arczipt.teamup.dto.NameAndLinkDTO;
 import com.arczipt.teamup.dto.ProjectInvitationDTO;
 import com.arczipt.teamup.dto.RoleDTO;
 import com.arczipt.teamup.mapper.ProjectInvitationMapper;
@@ -50,7 +51,7 @@ public class ProjectServiceTest {
         Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
         ProjectRole role = new ProjectRole((long) 1, "my_role", "role desc", new ArrayList<>());
         RoleDTO roleDTO = ProjectRoleMappper.INSTANCE.mapToRoleDTO(role);
-        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO("my_project", roleDTO, "my_user", InvitationStatus.WAITING.name());
+        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO(new NameAndLinkDTO("my_project"), roleDTO, new NameAndLinkDTO("my_user"), InvitationStatus.WAITING.name());
 
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(projectRepository.findProjectByName(project.getName())).thenReturn(project);

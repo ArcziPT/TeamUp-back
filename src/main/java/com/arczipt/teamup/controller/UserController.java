@@ -1,7 +1,7 @@
 package com.arczipt.teamup.controller;
 
 import com.arczipt.teamup.dto.JobApplicationDTO;
-import com.arczipt.teamup.dto.ProjectInvitationMinDTO;
+import com.arczipt.teamup.dto.ProjectInvitationDTO;
 import com.arczipt.teamup.dto.UserMinDTO;
 import com.arczipt.teamup.dto.UserDTO;
 import com.arczipt.teamup.security.AuthenticationProvider;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -130,7 +129,7 @@ public class UserController {
     }
 
     @GetMapping("/invitations")
-    public ArrayList<ProjectInvitationMinDTO> getInvitations(){
+    public ArrayList<ProjectInvitationDTO> getInvitations(){
         String username = authProvider.getUsername();
 
         return userService.getInvitations(username);
