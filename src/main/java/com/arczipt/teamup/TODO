@@ -1,5 +1,2 @@
-Model:
-    -cascade
-
-DTO:
-    -use MapStruct to automatically map entities to DTOs
+HATEOAS and DTOs:
+    -find better solution of mapping entities to DTOs and adding links

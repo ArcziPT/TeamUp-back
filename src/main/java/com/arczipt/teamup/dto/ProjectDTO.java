@@ -1,6 +1,5 @@
 package com.arczipt.teamup.dto;
 
-import com.arczipt.teamup.model.Project;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +12,6 @@ public class ProjectDTO {
     private String briefDescription;
     private String description;
     private List<String> urls;
-    private List<NameAndLinkDTO> members;
-    private List<NameAndLinkDTO> postings;
+    private List<IdAndNameDTO> members;
+    private List<IdAndNameDTO> postings;
 }

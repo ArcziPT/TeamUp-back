@@ -1,6 +1,5 @@
 package com.arczipt.teamup.dto;
 
-import com.arczipt.teamup.model.JobApplication;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JobApplicationDTO {
     private String title;
-    private NameAndLinkDTO user;
+    private IdAndNameDTO user;
     private String status;
 }

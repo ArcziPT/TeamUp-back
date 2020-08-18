@@ -2,10 +2,9 @@ package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.controller.ProjectController;
 import com.arczipt.teamup.controller.UserController;
-import com.arczipt.teamup.dto.NameAndLinkDTO;
+import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.ProjectMemberDTO;
 import com.arczipt.teamup.model.ProjectMember;
-import com.arczipt.teamup.model.User;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -52,13 +51,13 @@ public interface ProjectMemberMapper {
      */
     @Named("listProjectMemberToUsernameAndLink")
     @IterableMapping(qualifiedByName = "projectMemberToUsernameAndLink")
-    List<NameAndLinkDTO> mapToUsernameAndLinkDTO(List<ProjectMember> members);
+    List<IdAndNameDTO> mapToUsernameAndLinkDTO(List<ProjectMember> members);
 
     @Named("projectMemberToUsernameAndLink")
-    default NameAndLinkDTO mapToUsernameAndLinkDTO(ProjectMember member){
-        NameAndLinkDTO dto = new NameAndLinkDTO();
+    default IdAndNameDTO mapToUsernameAndLinkDTO(ProjectMember member){
+        IdAndNameDTO dto = new IdAndNameDTO();
         dto.setName(member.getUser().getUsername());
-        dto.add(linkTo(methodOn(UserController.class).getProfile(member.getUser().getId())).withSelfRel());
+        dto.setId(member.getUser().getId());
         return dto;
     }
 
@@ -70,13 +69,13 @@ public interface ProjectMemberMapper {
      */
     @Named("listProjectMemberToProjectNameAndLink")
     @IterableMapping(qualifiedByName = "projectMemberToProjectNameAndLink")
-    List<NameAndLinkDTO> mapToProjectNameAndLinkDTO(List<ProjectMember> members);
+    List<IdAndNameDTO> mapToProjectNameAndLinkDTO(List<ProjectMember> members);
 
     @Named("projectMemberToProjectNameAndLink")
-    default NameAndLinkDTO mapToProjectNameAndLinkDTO(ProjectMember member){
-        NameAndLinkDTO dto = new NameAndLinkDTO();
+    default IdAndNameDTO mapToProjectNameAndLinkDTO(ProjectMember member){
+        IdAndNameDTO dto = new IdAndNameDTO();
         dto.setName(member.getProject().getName());
-        dto.add(linkTo(methodOn(ProjectController.class).getProject(member.getProject().getId())).withSelfRel());
+        dto.setId(member.getProject().getId());
         return dto;
     }
 }

@@ -1,6 +1,5 @@
 package com.arczipt.teamup.dto;
 
-import com.arczipt.teamup.model.Project;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProjectMinDTO {
-    private NameAndLinkDTO name;
+    private IdAndNameDTO name;
     private String briefDescription;
 }

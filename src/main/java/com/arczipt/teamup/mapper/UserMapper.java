@@ -1,7 +1,7 @@
 package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.controller.UserController;
-import com.arczipt.teamup.dto.NameAndLinkDTO;
+import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.UserDTO;
 import com.arczipt.teamup.dto.UserMinDTO;
 import com.arczipt.teamup.model.User;
@@ -9,9 +9,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Links;
-import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import java.util.List;
 
@@ -34,12 +31,12 @@ public interface UserMapper {
     @Mapping(target = "projects", source = "projectMember", qualifiedByName = "listProjectMemberToProjectNameAndLink")
     UserDTO mapToUserDTO(User user);
 
-    List<NameAndLinkDTO> mapToNameAndLinkDTO(List<User> users);
+    List<IdAndNameDTO> mapToNameAndLinkDTO(List<User> users);
 
-    default NameAndLinkDTO mapToNameAndLinkDTO(User user){
-        NameAndLinkDTO dto = new NameAndLinkDTO();
+    default IdAndNameDTO mapToNameAndLinkDTO(User user){
+        IdAndNameDTO dto = new IdAndNameDTO();
         dto.setName(user.getUsername());
-        dto.add(linkTo(methodOn(UserController.class).getProfile(user.getId())).withSelfRel());
+        dto.setId(user.getId());
         return dto;
     }
 }

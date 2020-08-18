@@ -1,9 +1,8 @@
 package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.controller.ProjectController;
-import com.arczipt.teamup.dto.JobPostingCreateDTO;
+import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.JobPostingDTO;
-import com.arczipt.teamup.dto.NameAndLinkDTO;
 import com.arczipt.teamup.model.JobPosting;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -29,12 +28,12 @@ public interface JobPostingMapper {
         return jobPosting.getTitle();
     }
 
-    List<NameAndLinkDTO> mapToNameAndLinkDTO(List<JobPosting> postings);
+    List<IdAndNameDTO> mapToNameAndLinkDTO(List<JobPosting> postings);
 
-    default NameAndLinkDTO mapToNameAndLinkDTO(JobPosting posting){
-        NameAndLinkDTO dto = new NameAndLinkDTO();
+    default IdAndNameDTO mapToNameAndLinkDTO(JobPosting posting){
+        IdAndNameDTO dto = new IdAndNameDTO();
         dto.setName(posting.getTitle());
-        dto.add(linkTo(methodOn(ProjectController.class).getJobPosting(posting.getProject().getId(), posting.getId())).withSelfRel());
+        dto.setId(posting.getId());
         return dto;
     }
 }

@@ -1,7 +1,7 @@
 package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.controller.ProjectController;
-import com.arczipt.teamup.dto.NameAndLinkDTO;
+import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.ProjectDTO;
 import com.arczipt.teamup.dto.ProjectMinDTO;
 import com.arczipt.teamup.model.Project;
@@ -29,12 +29,12 @@ public interface ProjectMapper {
     @Mapping(target = "briefDescription", source = "project.briefDescription")
     ProjectMinDTO mapToProjectMinDTO(Project project);
 
-    List<NameAndLinkDTO> mapToNameAndLinkDTO(List<Project> projects);
+    List<IdAndNameDTO> mapToNameAndLinkDTO(List<Project> projects);
 
-    default NameAndLinkDTO mapToNameAndLinkDTO(Project project){
-        NameAndLinkDTO dto = new NameAndLinkDTO();
+    default IdAndNameDTO mapToNameAndLinkDTO(Project project){
+        IdAndNameDTO dto = new IdAndNameDTO();
         dto.setName(project.getName());
-        dto.add(linkTo(methodOn(ProjectController.class).getProject(project.getId())).withSelfRel());
+        dto.setId(project.getId());
         return dto;
     }
 }

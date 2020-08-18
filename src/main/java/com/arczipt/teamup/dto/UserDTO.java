@@ -1,15 +1,10 @@
 package com.arczipt.teamup.dto;
 
-import com.arczipt.teamup.model.Project;
-import com.arczipt.teamup.model.ProjectMember;
-import com.arczipt.teamup.model.Skill;
-import com.arczipt.teamup.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -25,5 +20,5 @@ public class UserDTO {
     private List<String> urls;
     private String description;
     private Integer rating;
-    private List<NameAndLinkDTO> projects;
+    private List<IdAndNameDTO> projects;
 }

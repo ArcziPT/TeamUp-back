@@ -1,11 +1,13 @@
 package com.arczipt.teamup.service;
 
+import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.JobPostingCreateDTO;
-import com.arczipt.teamup.dto.NameAndLinkDTO;
 import com.arczipt.teamup.dto.ProjectInvitationDTO;
 import com.arczipt.teamup.dto.RoleDTO;
 import com.arczipt.teamup.mapper.ProjectInvitationMapper;
+import com.arczipt.teamup.mapper.ProjectMapper;
 import com.arczipt.teamup.mapper.ProjectRoleMappper;
+import com.arczipt.teamup.mapper.UserMapper;
 import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.repo.*;
 import org.junit.Test;
@@ -51,7 +53,7 @@ public class ProjectServiceTest {
         Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
         ProjectRole role = new ProjectRole((long) 1, "my_role", "role desc", new ArrayList<>());
         RoleDTO roleDTO = ProjectRoleMappper.INSTANCE.mapToRoleDTO(role);
-        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO(new NameAndLinkDTO("my_project"), roleDTO, new NameAndLinkDTO("my_user"), InvitationStatus.WAITING.name());
+        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO(ProjectMapper.INSTANCE.mapToNameAndLinkDTO(project), roleDTO, UserMapper.INSTANCE.mapToNameAndLinkDTO(user), InvitationStatus.WAITING.name());
 
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(projectRepository.findProjectByName(project.getName())).thenReturn(project);
