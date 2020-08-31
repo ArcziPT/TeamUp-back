@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProjectMinDTO {
-    private IdAndNameDTO name;
+    private IdAndNameDTO project;
     private String briefDescription;
 }

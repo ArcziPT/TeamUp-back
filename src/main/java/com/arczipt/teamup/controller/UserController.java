@@ -1,14 +1,13 @@
 package com.arczipt.teamup.controller;
 
-import com.arczipt.teamup.dto.JobApplicationDTO;
-import com.arczipt.teamup.dto.ProjectInvitationDTO;
-import com.arczipt.teamup.dto.UserMinDTO;
-import com.arczipt.teamup.dto.UserDTO;
+import com.arczipt.teamup.dto.*;
 import com.arczipt.teamup.security.AuthenticationProvider;
 import com.arczipt.teamup.service.UserService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -37,7 +36,7 @@ public class UserController {
      * @return list of matching users
      */
     @GetMapping("/search")
-    public List<UserMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
+    public SearchResult<UserMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
                                    @RequestParam(defaultValue = "") String pattern,
                                    @RequestParam(defaultValue = "") String sortBy,
                                    @RequestParam(defaultValue = "") String order,
@@ -54,7 +53,7 @@ public class UserController {
             default -> throw new IllegalStateException("Unexpected value: " + order);
         }
 
-        ArrayList<UserMinDTO> users;
+        SearchResult<UserMinDTO> users;
         switch (searchBy) {
             case "username" -> users = userService.findWithUsernameLike(pattern, pageRequest);
             case "skill" -> users = userService.findBySkillName(pattern, pageRequest);
@@ -83,11 +82,9 @@ public class UserController {
      * @return - success "Y", error "N"
      */
     @PostMapping("/{id}/rate")
-    public String rate(@PathVariable Long id){
+    public ResponseEntity<?> rate(@PathVariable Long id){
         String raterUsername = authProvider.getUsername();
-        userService.rateUser(id, raterUsername);
-
-        return "OK";
+        return ResponseEntity.ok(new StatusDTO(userService.rateUser(id, raterUsername)));
     }
 
     /**
@@ -98,11 +95,9 @@ public class UserController {
      * @return - success "Y", error "N"
      */
     @PostMapping("/{id}/unrate")
-    public String unrate(@PathVariable Long id){
+    public ResponseEntity<?> unrate(@PathVariable Long id){
         String raterUsername = authProvider.getUsername();
-        userService.unrateUser(id, raterUsername);
-
-        return "OK";
+        return ResponseEntity.ok(new StatusDTO(userService.unrateUser(id, raterUsername)));
     }
 
     /**
@@ -112,9 +107,9 @@ public class UserController {
      * @return "Y" - rated, "N" - not rated
      */
     @GetMapping("/{id}/isRated")
-    public String isRated(@PathVariable Long id){
+    public ResponseEntity<?> isRated(@PathVariable Long id){
         String raterUsername = authProvider.getUsername();
-        return userService.isRated(id, raterUsername) ? "Y" : "N";
+        return ResponseEntity.ok(new StatusDTO(userService.isRated(id, raterUsername)));
     }
 
     @GetMapping("/")
@@ -129,9 +124,29 @@ public class UserController {
     }
 
     @GetMapping("/invitations")
-    public ArrayList<ProjectInvitationDTO> getInvitations(){
+    public ArrayList<ProjectInvitationDTO> getInvitations(@RequestParam(defaultValue = "true") Boolean waiting){
         String username = authProvider.getUsername();
 
-        return userService.getInvitations(username);
+        return userService.getInvitations(username, waiting);
+    }
+
+    @PutMapping("/invitations/{id}")
+    public ResponseEntity<?> updateInvitationStatus(@PathVariable Long id, @RequestParam Boolean accepted){
+        if(accepted == null)
+            return ResponseEntity.badRequest().build();
+
+        String username = authProvider.getUsername();
+
+        return ResponseEntity.ok(new StatusDTO(userService.updateInvitationStatus(username, id, accepted)));
+    }
+
+    @GetMapping("/{id}/projects")
+    public ArrayList<ProjectMemberDTO> getProjects(@PathVariable Long id){
+        return userService.getProjects(id);
+    }
+
+    @GetMapping("/{id}/managedProjects")
+    public ArrayList<IdAndNameDTO> getManagedProjects(@PathVariable Long id){
+        return userService.getManagedProjects(id);
     }
 }

@@ -1,2 +1,15 @@
-HATEOAS and DTOs:
-    -find better solution of mapping entities to DTOs and adding links
+0. !!!!! Add validation !!!!!
+0. SQL & HTML injection
+0. XSS
+
+1. Remove possibility to apply infinitely many times.
+
+2. Add pagination for projects' members, postings, invitations and users' projects and invitations.
+
+3. Possibility to obtain only waiting invitations and applications.
+
+4. Instead of ignoring not existing entities, return adequate error.
+
+5. Add limitations of projects, members, ...
+
+6. Add docs

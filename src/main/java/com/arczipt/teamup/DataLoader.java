@@ -23,6 +23,8 @@ import java.util.List;
 public class DataLoader implements ApplicationRunner {
 
     @Autowired
+    DepartmentRepository departmentRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private ProjectRepository projectRepository;
@@ -50,9 +52,10 @@ public class DataLoader implements ApplicationRunner {
         skillRepository.save(s3);
         skillRepository.save(s4);
 
+
         ProjectRole role = new ProjectRole();
         role.setName("ATHLETE");
-        role.setSkills(Arrays.asList(s1, s2));
+        role.setDepartments(new ArrayList<>());
         role.setDescription("new athlete");
         projectRoleRepository.save(role);
 
@@ -70,23 +73,43 @@ public class DataLoader implements ApplicationRunner {
         String hash = ((PasswordEncoder) context.getBean("passwordEncoder")).encode("pass");
         user.setHash(hash);
         user.setApplications(new ArrayList<>());
-        user.setDescription("user desc");
-        user.setEmail("user@mail.com");
-        user.setFirstName("John");
+        user.setBriefDescription("user desc");
         user.setProjectInvitations(new ArrayList<>());
         user.setRatedBy(new ArrayList<>());
         user.setRatedUsers(new ArrayList<>());
         user.setSkills(Arrays.asList(s1, s2, s3, s4));
-        user.setSurname("Smith");
         user.setUrls(Arrays.asList("user123.com", "github.com/user123"));
         user.setUsername("user123");
         userRepository.save(user);
 
+        User user2 = new User();
+        user2.setRating(123);
+        hash = ((PasswordEncoder) context.getBean("passwordEncoder")).encode("pass");
+        user2.setHash(hash);
+        user2.setApplications(new ArrayList<>());
+        user2.setBriefDescription("user desc");
+        user2.setProjectInvitations(new ArrayList<>());
+        user2.setRatedBy(new ArrayList<>());
+        user2.setRatedUsers(new ArrayList<>());
+        user2.setSkills(Arrays.asList(s1, s2, s3, s4));
+        user2.setUrls(Arrays.asList("user123.com", "github.com/user123"));
+        user2.setUsername("new_user");
+        userRepository.save(user2);
+
         ProjectMember member = new ProjectMember();
         member.setProject(project);
-        member.setRole(projectRoleRepository.findByName("ATHLETE"));
+        member.setRole(role);
         member.setUser(user);
-        member.setAdmin(false);
+        member.setAdmin(true);
         projectMemberRepository.save(member);
+
+        Department d1 = new Department();
+        d1.setName("Dep1");
+        d1.setProject(project);
+        Department d2 = new Department();
+        d2.setName("Dep2");
+        d2.setProject(project);
+        departmentRepository.save(d1);
+        departmentRepository.save(d2);
     }
 }

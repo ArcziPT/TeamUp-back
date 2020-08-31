@@ -39,7 +39,7 @@ public class UserServiceTest {
 
 
     private User getDummyUser(int id, String username){
-        return new User((long) id, username, "hash", "firstname", "surname", "e@mail.com", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        return new User((long) id, username, "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class UserServiceTest {
 
     @Test
     public void shouldReturnUserById(){
-        User user = new User((long) 1, "username", "hash", "firstname", "surname", "e@mail.com", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "username", "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         UserDTO userDTO = userService.findById(user.getId());
@@ -128,7 +128,7 @@ public class UserServiceTest {
 
     @Test
     public void shouldReturnUserByUsername() {
-        User user = new User((long) 1, "username", "hash", "firstname", "surname", "e@mail.com", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "username", "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
 
         UserDTO userDTO = userService.findByUsername(user.getUsername());

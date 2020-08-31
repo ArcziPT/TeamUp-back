@@ -11,4 +11,9 @@ public class AuthenticationProvider implements IAuthenticationProvider{
     public String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
+    @Override
+    public Long getId() {
+        return ((TeamupUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+    }
 }

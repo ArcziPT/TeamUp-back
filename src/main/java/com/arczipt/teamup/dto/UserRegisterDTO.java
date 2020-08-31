@@ -11,8 +11,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private String name;
+public class UserRegisterDTO {
+    private String username;
+    private String password;
+    private String briefDescription;
     private String description;
-    private List<String> departments;
+    private List<String> skills;
+    private List<String> urls;
 }

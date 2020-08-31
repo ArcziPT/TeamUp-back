@@ -18,6 +18,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
@@ -34,4 +35,7 @@ public class Project {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<ProjectInvitation> invitations;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private List<Department> departments;
 }

@@ -7,6 +7,8 @@ import com.arczipt.teamup.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,7 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public ArrayList<ProjectMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
+    public SearchResult<ProjectMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
                                            @RequestParam(defaultValue = "") String pattern,
                                            @RequestParam(defaultValue = "") String sortBy,
                                            @RequestParam(defaultValue = "") String order,
@@ -47,9 +49,9 @@ public class ProjectController {
             default -> throw new IllegalStateException("Unexpected value: " + order);
         }
 
-        ArrayList<ProjectMinDTO> projects;
+        SearchResult<ProjectMinDTO> projects;
         switch (searchBy) {
-            case "name" -> projects = projectService.findWithNameLike(pattern);
+            case "name" -> projects = projectService.findWithNameLike(pattern, pageRequest);
             default -> throw new IllegalStateException("Unexpected value: " + searchBy);
         }
 
@@ -57,10 +59,16 @@ public class ProjectController {
     }
 
     @GetMapping("/")
-    public ArrayList<ProjectMinDTO> getProjects(){
-        String username = authProvider.getUsername();
+    public ArrayList<ProjectMemberDTO> getProjects(){
+        Long id = authProvider.getId();
 
-        return userService.getProjects(username);
+        return userService.getProjects(id);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createProject(@RequestBody ProjectCreateDTO projectDTO){
+        String username = authProvider.getUsername();
+        return ResponseEntity.ok(new StatusDTO(projectService.createProject(projectDTO, username)));
     }
 
     @GetMapping("/{id}")
@@ -68,36 +76,86 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
+    @PostMapping("/{id}")
+    public ResponseEntity<?> editProject(@PathVariable Long id, @RequestBody ProjectDTO project){
+        return ResponseEntity.ok(new StatusDTO(this.projectService.edit(id, project)));
+    }
+
     @GetMapping("/{id}/isAdmin")
-    public String isAdmin(@PathVariable Long id){
-        return projectService.isAdmin(id, authProvider.getUsername()) ? "Y" : "N";
+    public ResponseEntity<?> isAdmin(@PathVariable Long id){
+        return ResponseEntity.ok(new StatusDTO(projectService.isAdmin(id, authProvider.getUsername())));
     }
 
+    @GetMapping("/{id}/isMember")
+    public ResponseEntity<?> isMember(@PathVariable Long id){
+        String username = authProvider.getUsername();
+        return ResponseEntity.ok(new StatusDTO(projectService.isMember(username, id)));
+    }
+
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
     @PostMapping("/{id}/invitations")
-    public String sendInvitation(@PathVariable Long id,  ProjectInvitationDTO projectInvitationDTO){
-        projectService.sendInvitation(projectInvitationDTO);
-
-        return "Y";
+    public ResponseEntity<?> sendInvitation(@PathVariable Long id, @RequestBody ProjectInvitationCreateDTO projectInvitation){
+        return ResponseEntity.ok(new StatusDTO(projectService.sendInvitation(projectInvitation)));
     }
 
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
     @GetMapping("/{id}/invitations")
     public ArrayList<ProjectInvitationDTO> getInvitations(@PathVariable Long id){
         return projectService.getInvitations(id);
     }
 
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
     @PostMapping("/{id}/postings")
-    public String createJobPosting(@PathVariable Long id, @RequestParam JobPostingCreateDTO jobPosting){
-        projectService.addJobPosting(id, jobPosting);
-        return "Y";
+    public ResponseEntity<?> createJobPosting(@PathVariable Long id, @RequestBody JobPostingCreateDTO jobPosting){
+        return ResponseEntity.ok(new StatusDTO(projectService.addJobPosting(id, jobPosting)));
+    }
+
+    @PostMapping("/{projectId}/postings/{postingId}")
+    public ResponseEntity<?> apply(@PathVariable Long projectId, @PathVariable Long postingId){
+        String username = authProvider.getUsername();
+
+        return ResponseEntity.ok(new StatusDTO(projectService.apply(username, projectId, postingId)));
+    }
+
+    @GetMapping("/{projectId}/postings/{postingId}/hasApplied")
+    public StatusDTO hasApplied(@PathVariable Long projectId, @PathVariable Long postingId){
+        String username = authProvider.getUsername();
+        return new StatusDTO(projectService.hasApplied(username, projectId, postingId));
     }
 
     @GetMapping("/{id}/postings")
     public ArrayList<JobPostingDTO> getJobPostings(@PathVariable Long id){
-        return projectService.getJobPostings(id);
+        String username = authProvider.getUsername();
+        return projectService.getJobPostings(id, username);
     }
 
-    @GetMapping("/{projectId}/postings/{postingId}")
-    public ArrayList<JobPostingDTO> getJobPosting(@PathVariable Long projectId, @PathVariable Long postingId){
-        return new ArrayList<>();//TODO
+    @GetMapping("/{id}/members")
+    public ArrayList<ProjectMemberDTO> getMembers(@PathVariable Long id){
+        return projectService.getMembers(id);
+    }
+
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
+    @DeleteMapping("/{id}/members")
+    public ResponseEntity<?> removeMember(@PathVariable Long id, @RequestParam String username){
+        return ResponseEntity.ok(new StatusDTO(projectService.removeMember(id, username)));
+    }
+
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
+    @PostMapping("/{id}/makeAdmin")
+    public ResponseEntity<?> makeAdmin(@PathVariable Long id, @RequestBody String username){
+        return ResponseEntity.ok(new StatusDTO(projectService.makeAdmin(id, username)));
+    }
+
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
+    @GetMapping("/{id}/departments")
+    public ArrayList<IdAndNameDTO> getDepartments(@PathVariable Long id){
+        return this.projectService.getDepartments(id);
+    }
+
+    @PreAuthorize("@authorizationFunctions.isAdmin(authentication, id)")
+    @PostMapping("/{id}/departments")
+    public ResponseEntity<?> addDepartment(@PathVariable Long id, @RequestBody String departmentName){
+        return ResponseEntity.ok(new StatusDTO(projectService.addDepartment(id, departmentName)));
     }
 }

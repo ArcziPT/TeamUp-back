@@ -1,18 +1,19 @@
 package com.arczipt.teamup.mapper;
 
 import com.arczipt.teamup.dto.RoleDTO;
+import com.arczipt.teamup.model.Department;
 import com.arczipt.teamup.model.ProjectRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {SkillMapper.class})
-public interface ProjectRoleMappper {
+@Mapper(uses = {DepartmentMapper.class})
+public interface ProjectRoleMapper {
 
-    ProjectRoleMappper INSTANCE = Mappers.getMapper(ProjectRoleMappper.class);
+    ProjectRoleMapper INSTANCE = Mappers.getMapper(ProjectRoleMapper.class);
 
     @Mapping(target = "name", source = "name")
     @Mapping(target = "description", source = "description")
-    @Mapping(target = "skills", source = "skills")
+    @Mapping(target = "departments", source = "departments")
     RoleDTO mapToRoleDTO(ProjectRole role);
 }

@@ -1,12 +1,9 @@
 package com.arczipt.teamup.service;
 
-import com.arczipt.teamup.dto.IdAndNameDTO;
-import com.arczipt.teamup.dto.JobPostingCreateDTO;
-import com.arczipt.teamup.dto.ProjectInvitationDTO;
-import com.arczipt.teamup.dto.RoleDTO;
+import com.arczipt.teamup.dto.*;
 import com.arczipt.teamup.mapper.ProjectInvitationMapper;
 import com.arczipt.teamup.mapper.ProjectMapper;
-import com.arczipt.teamup.mapper.ProjectRoleMappper;
+import com.arczipt.teamup.mapper.ProjectRoleMapper;
 import com.arczipt.teamup.mapper.UserMapper;
 import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.repo.*;
@@ -49,44 +46,42 @@ public class ProjectServiceTest {
 
     @Test
     public void whenSendInvitation_ShouldCreateProjectInvitation(){
-        User user = new User((long) 1, "my_user", "hash", "firstName", "surname", "email", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "my_user", "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         ProjectRole role = new ProjectRole((long) 1, "my_role", "role desc", new ArrayList<>());
-        RoleDTO roleDTO = ProjectRoleMappper.INSTANCE.mapToRoleDTO(role);
-        ProjectInvitationDTO projectInvitationDTO = new ProjectInvitationDTO(ProjectMapper.INSTANCE.mapToNameAndLinkDTO(project), roleDTO, UserMapper.INSTANCE.mapToNameAndLinkDTO(user), InvitationStatus.WAITING.name());
+        RoleDTO roleDTO = ProjectRoleMapper.INSTANCE.mapToRoleDTO(role);
+        ProjectInvitationCreateDTO projectInvitation = new ProjectInvitationCreateDTO(project.getName(), user.getUsername(), roleDTO);
 
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(projectRepository.findProjectByName(project.getName())).thenReturn(project);
-        Mockito.when(projectRoleRepository.findByName(role.getName())).thenReturn(role);
         Mockito.when(projectInvitationRepository.save(Mockito.any())).thenAnswer(new Answer<ProjectInvitation>() {
             @Override
             public ProjectInvitation answer(InvocationOnMock invocationOnMock) throws Throwable {
                 ProjectInvitation saved = (ProjectInvitation) invocationOnMock.getArguments()[0];
 
-                assertThat(ProjectInvitationMapper.INSTANCE.mapToProjectInvitationDTO(saved)).isEqualToComparingFieldByField(projectInvitationDTO); //actual test
+                assertThat(ProjectInvitationMapper.INSTANCE.mapToProjectInvitationDTO(saved)).isEqualToComparingFieldByField(projectInvitation); //actual test
                 return saved;
             }
         });
 
         //call
-        projectService.sendInvitation(projectInvitationDTO);
+        projectService.sendInvitation(projectInvitation);
 
         Mockito.verify(projectInvitationRepository, Mockito.times(1)).save(Mockito.any()); //assert that actual test will be run
     }
 
     @Test
     public void whenAddJobPosting_ShouldCreateJobPosting(){
-        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
+        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         ProjectRole role = new ProjectRole((long) 1, "my_role", "role desc", new ArrayList<>());
-        JobPostingCreateDTO postingDTO = new JobPostingCreateDTO("team position", "my_role");
+        JobPostingCreateDTO postingDTO = new JobPostingCreateDTO("team position", ProjectRoleMapper.INSTANCE.mapToRoleDTO(role));
 
         Mockito.when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-        Mockito.when(projectRoleRepository.findByName(role.getName())).thenReturn(role);
         Mockito.when(jobPostingRepository.save(Mockito.any())).thenAnswer(new Answer<JobPosting>() {
             @Override
             public JobPosting answer(InvocationOnMock invocationOnMock) throws Throwable {
                 JobPosting jobPosting = (JobPosting) invocationOnMock.getArguments()[0];
-                JobPostingCreateDTO saved = new JobPostingCreateDTO(jobPosting.getTitle(), jobPosting.getRole().getName());
+                JobPostingCreateDTO saved = new JobPostingCreateDTO(jobPosting.getTitle(), ProjectRoleMapper.INSTANCE.mapToRoleDTO(jobPosting.getRole()));
 
                 assertThat(saved).isEqualToComparingFieldByField(postingDTO);
                 return jobPosting;
@@ -100,8 +95,8 @@ public class ProjectServiceTest {
 
     @Test
     public void whenIsAdmin_ShouldReturnTrue() {
-        User user = new User((long) 1, "my_user", "hash", "firstName", "surname", "email", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "my_user", "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Project project = new Project((long) 1, "my_project", new ArrayList<>(), new ArrayList<>(), "desc", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         ProjectMember member = new ProjectMember((long) 1, user, null, project, true);
 
         project.getMembers().add(member);

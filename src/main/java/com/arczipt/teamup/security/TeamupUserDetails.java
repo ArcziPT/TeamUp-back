@@ -41,6 +41,10 @@ public class TeamupUserDetails implements UserDetails {
         return user;
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     //TODO
     @Override
     public boolean isAccountNonExpired() {

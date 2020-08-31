@@ -9,5 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectMemberDTO {
     private IdAndNameDTO user;
+    private IdAndNameDTO project;
     private RoleDTO role;
+    private boolean admin;
 }

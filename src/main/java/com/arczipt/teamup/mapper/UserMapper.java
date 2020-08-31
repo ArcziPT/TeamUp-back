@@ -17,18 +17,18 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "username", source = "username")
-    @Mapping(target = "skills", source = "skills")
-    @Mapping(target = "rating", source = "rating")
-    @Mapping(target = "projects", source = "projectMember", qualifiedByName = "listProjectMemberToProjectNameAndLink")
+    @Mapping(target = "user", source = "user")
+    @Mapping(target = "skills", source = "user.skills")
+    @Mapping(target = "rating", source = "user.rating")
+    @Mapping(target = "briefDescription", source = "user.briefDescription")
     UserMinDTO mapToUserMinDTO(User user);
 
     @Mapping(target = "username", source = "username")
     @Mapping(target = "skills", source = "skills")
     @Mapping(target = "urls", source = "urls")
     @Mapping(target = "description", source = "description")
+    @Mapping(target = "briefDescription", source = "briefDescription")
     @Mapping(target = "rating", source = "rating")
-    @Mapping(target = "projects", source = "projectMember", qualifiedByName = "listProjectMemberToProjectNameAndLink")
     UserDTO mapToUserDTO(User user);
 
     List<IdAndNameDTO> mapToNameAndLinkDTO(List<User> users);

@@ -1,5 +1,6 @@
 package com.arczipt.teamup.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,19 +15,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserMinDTO {
-    private String username;
+    private IdAndNameDTO user;
     private List<String> skills;
     private Integer rating;
-    private List<IdAndNameDTO> projects;
-
-    @Override
-    public String toString() {
-        return "UserMinDTO{" +
-                "username='" + username + '\'' +
-                ", skills=" + skills +
-                ", rating=" + rating +
-                ", projects=" + projects +
-                '}';
-    }
+    private String briefDescription;
 }

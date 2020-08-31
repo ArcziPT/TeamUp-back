@@ -9,11 +9,13 @@ import java.util.ArrayList;
 public interface UserService {
     UserDTO findById(Long id);
 
+    boolean register(UserRegisterDTO userRegisterDTO);
+
     UserDTO findByUsername(String username);
 
-    ArrayList<UserMinDTO> findWithUsernameLike(String pattern, Pageable pageable);
+    SearchResult<UserMinDTO> findWithUsernameLike(String pattern, Pageable pageable);
 
-    ArrayList<UserMinDTO> findBySkillName(String skillName, Pageable pageable);
+    SearchResult<UserMinDTO> findBySkillName(String skillName, Pageable pageable);
 
     boolean rateUser(Long id, String raterUsername);
     boolean unrateUser(Long id, String raterUsername);
@@ -22,7 +24,10 @@ public interface UserService {
 
     ArrayList<JobApplicationDTO> getJobApplications(String username);
 
-    ArrayList<ProjectMinDTO> getProjects(String username);
+    ArrayList<ProjectMemberDTO> getProjects(Long id);
 
-    ArrayList<ProjectInvitationDTO> getInvitations(String username);
+    ArrayList<ProjectInvitationDTO> getInvitations(String username, Boolean waiting);
+    boolean updateInvitationStatus(String username, Long id, Boolean accepted);
+
+    ArrayList<IdAndNameDTO> getManagedProjects(Long id);
 }

@@ -8,7 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class JobApplicationDTO {
-    private String title;
+    private Long id;
+    private IdAndNameDTO posting;
     private IdAndNameDTO user;
     private String status;
 }

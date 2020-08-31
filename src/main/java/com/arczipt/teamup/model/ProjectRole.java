@@ -27,8 +27,8 @@ public class ProjectRole {
 
     //list of skills a member is "using" in the project
     @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "role_skills",
+    @JoinTable(name = "role_departments",
     joinColumns = @JoinColumn(name = "role_id"),
-    inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    inverseJoinColumns = @JoinColumn(name = "department_id"))
+    private List<Department> departments;
 }

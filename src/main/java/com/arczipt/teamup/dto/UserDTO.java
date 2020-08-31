@@ -18,7 +18,7 @@ public class UserDTO {
     private String username;
     private List<String> skills;
     private List<String> urls;
+    private String briefDescription;
     private String description;
     private Integer rating;
-    private List<IdAndNameDTO> projects;
 }

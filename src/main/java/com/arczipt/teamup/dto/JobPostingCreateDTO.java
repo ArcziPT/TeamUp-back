@@ -11,6 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JobPostingCreateDTO {
     private String title;
-
-    private String role;
+    private RoleDTO role;
 }

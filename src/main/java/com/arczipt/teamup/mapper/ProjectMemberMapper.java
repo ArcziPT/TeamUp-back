@@ -4,7 +4,9 @@ import com.arczipt.teamup.controller.ProjectController;
 import com.arczipt.teamup.controller.UserController;
 import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.ProjectMemberDTO;
+import com.arczipt.teamup.model.Project;
 import com.arczipt.teamup.model.ProjectMember;
+import com.arczipt.teamup.model.User;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,13 +18,15 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Mapper(uses = {SkillMapper.class})
+@Mapper(uses = {SkillMapper.class, UserMapper.class, ProjectMapper.class, DepartmentMapper.class})
 public interface ProjectMemberMapper {
 
     ProjectMemberMapper INSTANCE = Mappers.getMapper(ProjectMemberMapper.class);
 
     @Mapping(target = "user", source = "user")
+    @Mapping(target = "project", source = "project")
     @Mapping(target = "role", source = "role")
+    @Mapping(target = "admin", source = "admin")
     ProjectMemberDTO mapToProjectMemberDTO(ProjectMember member);
 
     @Named("listProjectMemberToUsername")

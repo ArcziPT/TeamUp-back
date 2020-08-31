@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import javax.management.relation.RoleInfo;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private String name;
-    private String description;
-    private List<String> departments;
+public class ProjectInvitationCreateDTO {
+    private String projectName;
+    private String username;
+    private RoleDTO role;
 }

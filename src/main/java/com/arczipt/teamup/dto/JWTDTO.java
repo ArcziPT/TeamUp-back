@@ -11,5 +11,6 @@ import org.mapstruct.Named;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JWTDTO {
+    private Long id;
     private String jwt;
 }

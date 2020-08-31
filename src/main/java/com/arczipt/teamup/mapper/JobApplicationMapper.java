@@ -8,17 +8,14 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {UserMapper.class, JobPostingMapper.class})
 public interface JobApplicationMapper {
 
     JobApplicationMapper INSTANCE = Mappers.getMapper(JobApplicationMapper.class);
 
-    @Mapping(target = "title", source = "jobPosting.title")
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "posting", source = "jobPosting")
     @Mapping(target = "user", source = "applicant")
     @Mapping(target = "status", source = "status")
     JobApplicationDTO mapToJobApplicationDTO(JobApplication application);
-
-    default Integer mapToApplicationsCount(List<JobApplication> application){
-        return application.size();
-    }
 }

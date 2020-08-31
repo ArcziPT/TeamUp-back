@@ -7,16 +7,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Skill {
+public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
     private String name;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "project_department_id")
+    private Project project;
 }

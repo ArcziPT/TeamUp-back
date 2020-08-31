@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * Test only custom queries used in user repository.
@@ -51,11 +53,11 @@ public class UserRepositoryTest {
         entityManager.persist(u3);
         entityManager.flush();
 
-        ArrayList<User> users = userRepository.findUsersWithUsernameLike("john%", PageRequest.of(0, 3));
-        assertThat(users.size()).isEqualTo(2);
+        Page<User> users = userRepository.findUsersWithUsernameLike("john%", PageRequest.of(0, 3));
+        assertThat((int) users.get().count()).isEqualTo(2);
 
         users = userRepository.findUsersWithUsernameLike("%123", PageRequest.of(0, 3));
-        assertThat(users.size()).isEqualTo(2);
+        assertThat((int) users.get().count()).isEqualTo(2);
     }
 
     @Test
@@ -83,15 +85,15 @@ public class UserRepositoryTest {
         entityManager.persist(u3);
         entityManager.flush();
 
-        ArrayList<User> users = userRepository.findUsersBySkillName("jumping", PageRequest.of(0, 3));
-        assertThat(users.size()).isEqualTo(1);
+        Page<User> users = userRepository.findUsersBySkillName("jumping", PageRequest.of(0, 3));
+        assertThat(users.get().count()).isEqualTo(1);
         assertThat(users.stream().map(User::getUsername)).contains(u1.getUsername());
 
         users = userRepository.findUsersBySkillName("running", PageRequest.of(0, 3));
-        assertThat(users.size()).isEqualTo(2);
+        assertThat(users.get().count()).isEqualTo(2);
 
 
         users = userRepository.findUsersBySkillName("skill", PageRequest.of(0, 3));
-        assertThat(users.size()).isEqualTo(0);
+        assertThat(users.get().count()).isEqualTo(0);
     }
 }

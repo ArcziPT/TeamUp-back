@@ -29,7 +29,7 @@ public class TeamupUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public TeamupUserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(s);
 
         //prefetch authorities to avoid later lazily initialization error

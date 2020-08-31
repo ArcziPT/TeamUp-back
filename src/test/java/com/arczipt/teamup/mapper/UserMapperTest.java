@@ -18,25 +18,23 @@ public class UserMapperTest {
     public void mapToUserMinDTOTest(){
         Skill s1 = new Skill((long) 1, "s1");
         Skill s2 = new Skill((long) 2, "s2");
-        User user = new User((long) 1, "username", "hash", "name", "surname", "mail", Arrays.asList(s1, s2), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "username", "hash", Arrays.asList(s1, s2), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         UserMinDTO mapped = UserMapper.INSTANCE.mapToUserMinDTO(user);
 
-        assertThat(mapped.getUsername()).isEqualTo(user.getUsername());
+        assertThat(mapped.getUser().getName()).isEqualTo(user.getUsername());
         assertThat(mapped.getRating()).isEqualTo(user.getRating());
         assertThat(mapped.getSkills()).isEqualTo(user.getSkills().stream().map(Skill::getName).collect(Collectors.toList()));
-        assertThat(mapped.getProjects()).isEqualTo(user.getProjectMember().stream().map(ProjectMember::getProject).map(Project::getName).collect(Collectors.toList()));
     }
 
     @Test
     public void mapToUserDTOTest(){
-        User user = new User((long) 1, "username", "hash", "name", "surname", "mail", new ArrayList<>(), new ArrayList<>(), "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User((long) 1, "username", "hash", new ArrayList<>(), new ArrayList<>(), "bDesc", "desc", 100, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         UserMinDTO mapped = UserMapper.INSTANCE.mapToUserMinDTO(user);
 
-        assertThat(mapped.getUsername()).isEqualTo(user.getUsername());
+        assertThat(mapped.getUser().getName()).isEqualTo(user.getUsername());
         assertThat(mapped.getRating()).isEqualTo(user.getRating());
         assertThat(mapped.getSkills()).isEqualTo(user.getSkills().stream().map(Skill::getName).collect(Collectors.toList()));
-        assertThat(mapped.getProjects()).isEqualTo(user.getProjectMember().stream().map(ProjectMember::getProject).map(Project::getName).collect(Collectors.toList()));
     }
 }

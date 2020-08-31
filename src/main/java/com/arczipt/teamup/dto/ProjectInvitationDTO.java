@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectInvitationDTO {
+    private Long id;
     private IdAndNameDTO project;
     private RoleDTO role;
     private IdAndNameDTO user;

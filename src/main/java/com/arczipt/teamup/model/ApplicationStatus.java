@@ -1,9 +1,7 @@
 package com.arczipt.teamup.model;
 
 public enum ApplicationStatus {
-    SENT,
-    READ,
+    WAITING,
     ACCEPTED,
-    DECLINED,
-    WAIT_LIST
+    DECLINED
 }

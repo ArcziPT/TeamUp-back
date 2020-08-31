@@ -21,11 +21,9 @@ public interface ProjectMapper {
     @Mapping(target = "briefDescription", source = "briefDescription")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "urls", source = "urls")
-    @Mapping(target = "members", source = "members", qualifiedByName = "listProjectMemberToUsernameAndLink")
-    @Mapping(target = "postings", source = "jobPostings")
     ProjectDTO mapToProjectDTO(Project project);
 
-    @Mapping(target = "name", source = "project")
+    @Mapping(target = "project", source = "project")
     @Mapping(target = "briefDescription", source = "project.briefDescription")
     ProjectMinDTO mapToProjectMinDTO(Project project);
 

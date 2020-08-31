@@ -20,12 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String username;
     private String hash;
-
-    private String firstName;
-    private String surname;
-    private String email;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_skills",
@@ -36,7 +33,11 @@ public class User {
     @ElementCollection
     private List<String> urls;
 
+    private String briefDescription;
+
     private String description;
+
+    //TODO: profile readme
 
     private Integer rating;
 

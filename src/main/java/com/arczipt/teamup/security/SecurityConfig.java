@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // disable CSRF for this application
                 .authorizeRequests()
-                .antMatchers("/auth").permitAll() // Enabling URL to be accessed by all users (even un-authenticated)
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/auth", "/register", "/**").permitAll() // Enabling URL to be accessed by all users (even un-authenticated)
                 .anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
