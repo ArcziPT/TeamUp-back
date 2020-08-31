@@ -37,13 +37,13 @@ public class UserController {
      */
     @GetMapping("/search")
     public SearchResult<UserMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
-                                   @RequestParam(defaultValue = "") String pattern,
+                                   @RequestParam(required = false, defaultValue = "") String pattern,
                                    @RequestParam(defaultValue = "") String sortBy,
                                    @RequestParam(defaultValue = "") String order,
                                    @RequestParam(defaultValue = "0") Integer page,
                                    @RequestParam(defaultValue = "0") Integer size){
 
-        if(searchBy.equals("") || pattern.equals("") || sortBy.equals("") || order.equals(""))
+        if(searchBy.equals("") || sortBy.equals("") || order.equals(""))
             return null; //TODO
 
         PageRequest pageRequest;

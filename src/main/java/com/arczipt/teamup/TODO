@@ -1,6 +1,8 @@
 0. !!!!! Add validation !!!!!
 0. SQL & HTML injection
 0. XSS
+0. Remove secret values
+0. Use BCrypt as pass encoder
 
 1. Remove possibility to apply infinitely many times.
 
