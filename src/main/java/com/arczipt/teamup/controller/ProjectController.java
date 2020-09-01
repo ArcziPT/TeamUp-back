@@ -5,6 +5,7 @@ import com.arczipt.teamup.security.AuthenticationProvider;
 import com.arczipt.teamup.service.ProjectService;
 import com.arczipt.teamup.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +69,15 @@ public class ProjectController {
     @PostMapping("/")
     public ResponseEntity<?> createProject(@RequestBody ProjectCreateDTO projectDTO){
         String username = authProvider.getUsername();
-        return ResponseEntity.ok(new StatusDTO(projectService.createProject(projectDTO, username)));
+        boolean success = false;
+
+        try{
+            success = projectService.createProject(projectDTO, username);
+        } catch (DataAccessException e){
+            return ResponseEntity.badRequest().body(new StatusDTO(false, "Project with that name already exist."));
+        }
+
+        return ResponseEntity.ok(new StatusDTO(success));
     }
 
     @GetMapping("/{id}")

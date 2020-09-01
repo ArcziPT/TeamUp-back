@@ -7,8 +7,22 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class StatusDTO {
     private Boolean status;
+    private String msg;
+
+    public StatusDTO(){
+        status = false;
+        msg = "";
+    }
+
+    public StatusDTO(Boolean status){
+        this.status = status;
+        msg = "";
+    }
+
+    public StatusDTO(Boolean status, String msg){
+        this.status = status;
+        this.msg = msg;
+    }
 }
