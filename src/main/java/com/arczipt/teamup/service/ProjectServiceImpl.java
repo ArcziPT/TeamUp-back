@@ -226,6 +226,10 @@ public class ProjectServiceImpl implements ProjectService{
                 if(jobPosting.getProject().getMembers().stream().anyMatch(pm -> pm.getUser().getUsername().equals(username)))
                     return;
 
+                //check if user already applied
+                if(jobPosting.getApplications().stream().anyMatch(posting -> posting.getApplicant().getUsername().equals(username)))
+                    return;
+
                 ret.set(true);
 
                 JobApplication jobApplication = new JobApplication();

@@ -4,14 +4,12 @@
 0. Remove secret values
 0. Use BCrypt as pass encoder
 
-1. Remove possibility to apply infinitely many times.
+1. Add pagination for projects' members, postings, invitations and users' projects and invitations.
 
-2. Add pagination for projects' members, postings, invitations and users' projects and invitations.
+2. Possibility to obtain only waiting invitations and applications.
 
-3. Possibility to obtain only waiting invitations and applications.
+3. Instead of ignoring not existing entities, return adequate error.
 
-4. Instead of ignoring not existing entities, return adequate error.
+4. Add limitations of projects, members, ...
 
-5. Add limitations of projects, members, ...
-
-6. Add docs
+5. Add docs
