@@ -2,7 +2,6 @@
 0. SQL & HTML injection
 0. XSS
 0. Remove secret values
-0. Use BCrypt as pass encoder
 
 1. Add pagination for projects' members, postings, invitations and users' projects and invitations.
 

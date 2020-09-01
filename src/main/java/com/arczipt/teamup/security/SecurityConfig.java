@@ -55,18 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence charSequence) {
-                return charSequence.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                System.out.println(charSequence);
-                System.out.println(s);
-                return s.equals(encode(charSequence));
-            }
-        };
+        return new BCryptPasswordEncoder();
+//        return new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence charSequence) {
+//                return charSequence.toString();
+//            }
+//
+//            @Override
+//            public boolean matches(CharSequence charSequence, String s) {
+//                System.out.println(charSequence);
+//                System.out.println(s);
+//                return s.equals(encode(charSequence));
+//            }
+//        };
     }
 }
