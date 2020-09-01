@@ -41,7 +41,7 @@ public class UserController {
                                    @RequestParam(defaultValue = "") String sortBy,
                                    @RequestParam(defaultValue = "") String order,
                                    @RequestParam(defaultValue = "0") Integer page,
-                                   @RequestParam(defaultValue = "0") Integer size){
+                                   @RequestParam(defaultValue = "20") Integer size){
 
         if(searchBy.equals("") || sortBy.equals("") || order.equals(""))
             return null; //TODO

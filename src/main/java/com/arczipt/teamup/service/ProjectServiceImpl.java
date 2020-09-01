@@ -128,7 +128,7 @@ public class ProjectServiceImpl implements ProjectService{
     @Transactional
     @Override
     public SearchResult<ProjectMinDTO> findWithNameLike(String pattern, Pageable pageable) {
-        pattern += "%"; //create SQL regex to find every username matching pattern with varying ending
+        pattern += "%"; //create SQL regex to find every name matching pattern with varying ending
         Page<Project> page = projectRepository.findWithNameLike(pattern, pageable);
 
         SearchResult<ProjectMinDTO> result = new SearchResult<>();
