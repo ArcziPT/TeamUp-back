@@ -1,13 +1,10 @@
 package com.arczipt.teamup.service;
 
-import com.arczipt.teamup.dto.JobApplicationDTO;
-import com.arczipt.teamup.dto.JobPostingDTO;
-import com.arczipt.teamup.dto.SearchResult;
+import com.arczipt.teamup.dto.*;
 import com.arczipt.teamup.mapper.JobApplicationMapper;
 import com.arczipt.teamup.mapper.JobPostingMapper;
-import com.arczipt.teamup.model.ApplicationStatus;
-import com.arczipt.teamup.model.JobApplication;
-import com.arczipt.teamup.model.ProjectMember;
+import com.arczipt.teamup.mapper.UserMapper;
+import com.arczipt.teamup.model.*;
 import com.arczipt.teamup.repo.JobApplicationRepository;
 import com.arczipt.teamup.repo.JobPostingRepository;
 import com.arczipt.teamup.repo.ProjectMemberRepository;
@@ -16,7 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import static com.arczipt.teamup.repo.specifications.JobPostingSpecifications.*;
+import static com.arczipt.teamup.repo.specifications.UserSpecifications.*;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -43,6 +43,20 @@ public class JobPostingServiceImpl implements JobPostingService{
             boolean hasApplied = jobPosting.getApplications().stream().map(app -> app.getApplicant().getUsername().equals(username)).findAny().isPresent();
             return JobPostingMapper.INSTANCE.mapToJobPostingDTO(jobPosting, hasApplied);
         }).orElse(null);
+    }
+
+    @Override
+    public SearchResult<JobPostingMinDTO> search(String title, String project, String roleName, ArrayList<String> departments, Pageable pageable) {
+        title += '%';
+        project += '%';
+        roleName += '%';
+        Page<JobPosting> page = jobPostingRepository.findAll(withTitleLike(title).and(withProjectLike(project)).and(withRoleNameLike(roleName)).and(withDepartments(departments)), pageable);
+
+        SearchResult<JobPostingMinDTO> result = new SearchResult<>();
+        result.setTotalPages(page.getTotalPages());
+        result.setResult(page.map(JobPostingMapper.INSTANCE::mapToJobPostingMinDTO).toList());
+
+        return result;
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package com.arczipt.teamup.mapper;
 import com.arczipt.teamup.controller.ProjectController;
 import com.arczipt.teamup.dto.IdAndNameDTO;
 import com.arczipt.teamup.dto.JobPostingDTO;
+import com.arczipt.teamup.dto.JobPostingMinDTO;
 import com.arczipt.teamup.model.ApplicationStatus;
 import com.arczipt.teamup.model.JobApplication;
 import com.arczipt.teamup.model.JobPosting;
@@ -25,6 +26,11 @@ public interface JobPostingMapper {
     @Mapping(target = "project", source = "posting.project")
     @Mapping(target = "hasApplied", source = "hasApplied")
     JobPostingDTO mapToJobPostingDTO(JobPosting posting, Boolean hasApplied);
+
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "project", source = "project")
+    @Mapping(target = "role", source = "role")
+    JobPostingMinDTO mapToJobPostingMinDTO(JobPosting jobPosting);
 
     List<String> mapToTitle(List<JobPosting> jobPostings);
 

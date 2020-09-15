@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public interface UserService {
     UserDTO findById(Long id);
 
+    SearchResult<UserMinDTO> search(String username, ArrayList<String> projects, ArrayList<String> skills, Pageable pageable);
+
     boolean register(UserRegisterDTO userRegisterDTO);
 
     UserDTO findByUsername(String username);

@@ -33,30 +33,11 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public SearchResult<ProjectMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
-                                           @RequestParam(required = false, defaultValue = "") String pattern,
-                                           @RequestParam(defaultValue = "") String sortBy,
-                                           @RequestParam(defaultValue = "") String order,
-                                           @RequestParam(defaultValue = "0") Integer page,
-                                           @RequestParam(defaultValue = "20") Integer size){
-
-        if(searchBy.equals("") || sortBy.equals("") || order.equals(""))
-            return null; //TODO
-
-        PageRequest pageRequest;
-        switch (order){
-            case "asc" -> pageRequest = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-            case "des" -> pageRequest = PageRequest.of(page, size, Sort.by(sortBy).descending());
-            default -> throw new IllegalStateException("Unexpected value: " + order);
-        }
-
-        SearchResult<ProjectMinDTO> projects;
-        switch (searchBy) {
-            case "name" -> projects = projectService.findWithNameLike(pattern, pageRequest);
-            default -> throw new IllegalStateException("Unexpected value: " + searchBy);
-        }
-
-        return projects;
+    public SearchResult<ProjectMinDTO> search(@RequestParam(required = false) String name,
+                                              @RequestParam(required = false) ArrayList<String> members,
+                                              @RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "20") Integer size){
+        return projectService.search(name, members, PageRequest.of(page, size));
     }
 
     @GetMapping("/")

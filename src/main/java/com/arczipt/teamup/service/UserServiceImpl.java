@@ -10,13 +10,17 @@ import com.arczipt.teamup.repo.ProjectInvitationRepository;
 import com.arczipt.teamup.repo.ProjectMemberRepository;
 import com.arczipt.teamup.repo.SkillRepository;
 import com.arczipt.teamup.repo.UserRepository;
+import com.arczipt.teamup.repo.specifications.UserSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specification.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import static com.arczipt.teamup.repo.specifications.UserSpecifications.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -44,6 +48,19 @@ public class UserServiceImpl implements UserService {
         this.projectMemberRepository = projectMemberRepository;
         this.skillRepository = skillRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Transactional
+    @Override
+    public SearchResult<UserMinDTO> search(String username, ArrayList<String> projects, ArrayList<String> skills, Pageable pageable) {
+        username += '%';
+        Page<User> page = userRepository.findAll(withUsernameLike(username).and(hasSkill(skills)).and(isMemberOfProject(projects)), pageable);
+
+        SearchResult<UserMinDTO> result = new SearchResult<>();
+        result.setTotalPages(page.getTotalPages());
+        result.setResult(page.map(UserMapper.INSTANCE::mapToUserMinDTO).toList());
+
+        return result;
     }
 
     @Transactional

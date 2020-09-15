@@ -26,41 +26,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    /**
-     * Search for users by specified parameter.
-     *
-     * @param searchBy - search parameter
-     * @param pattern - search parameter's value
-     * @param sortBy - sorting parameter
-     * @param order - order of result
-     * @return list of matching users
-     */
+
     @GetMapping("/search")
-    public SearchResult<UserMinDTO> search(@RequestParam(defaultValue = "") String searchBy,
-                                   @RequestParam(required = false, defaultValue = "") String pattern,
-                                   @RequestParam(defaultValue = "") String sortBy,
-                                   @RequestParam(defaultValue = "") String order,
-                                   @RequestParam(defaultValue = "0") Integer page,
-                                   @RequestParam(defaultValue = "20") Integer size){
-
-        if(searchBy.equals("") || sortBy.equals("") || order.equals(""))
-            return null; //TODO
-
-        PageRequest pageRequest;
-        switch (order){
-            case "asc" -> pageRequest = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-            case "des" -> pageRequest = PageRequest.of(page, size, Sort.by(sortBy).descending());
-            default -> throw new IllegalStateException("Unexpected value: " + order);
-        }
-
-        SearchResult<UserMinDTO> users;
-        switch (searchBy) {
-            case "username" -> users = userService.findWithUsernameLike(pattern, pageRequest);
-            case "skill" -> users = userService.findBySkillName(pattern, pageRequest);
-            default -> throw new IllegalStateException("Unexpected value: " + searchBy);
-        }
-
-        return users;
+    public SearchResult<UserMinDTO> search(@RequestParam(required = false) String username,
+                                           @RequestParam(required = false) ArrayList<String> projects,
+                                           @RequestParam(required = false) ArrayList<String> skills,
+                                           @RequestParam Integer page,
+                                           @RequestParam Integer size){
+        return userService.search(username, projects, skills, PageRequest.of(page, size));
     }
 
     /**

@@ -11,6 +11,8 @@ public interface ProjectService {
 
     ProjectDTO findByName(String name);
 
+    SearchResult<ProjectMinDTO> search(String name, ArrayList<String> members, Pageable pageable);
+
     boolean createProject(ProjectCreateDTO projectDTO, String username);
 
     SearchResult<ProjectMinDTO> findWithNameLike(String pattern, Pageable pageable);

@@ -1,9 +1,6 @@
 package com.arczipt.teamup.controller;
 
-import com.arczipt.teamup.dto.JobApplicationDTO;
-import com.arczipt.teamup.dto.JobPostingDTO;
-import com.arczipt.teamup.dto.SearchResult;
-import com.arczipt.teamup.dto.StatusDTO;
+import com.arczipt.teamup.dto.*;
 import com.arczipt.teamup.repo.JobPostingRepository;
 import com.arczipt.teamup.security.AuthenticationProvider;
 import com.arczipt.teamup.service.JobPostingService;
@@ -14,7 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.security.AuthProvider;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/postings")
@@ -28,6 +27,16 @@ public class JobPostingController {
                          AuthenticationProvider authProvider){
         this.jobPostingService = jobPostingService;
         this.authProvider = authProvider;
+    }
+
+    @GetMapping("/search")
+    public SearchResult<JobPostingMinDTO> search(@RequestParam(required = false) String title,
+                                                 @RequestParam(required = false) String project,
+                                                 @RequestParam(required = false) String roleName,
+                                                 @RequestParam(required = false) ArrayList<String> departments,
+                                                 @RequestParam(defaultValue = "0") Integer page,
+                                                 @RequestParam(defaultValue = "20") Integer size){
+        return jobPostingService.search(title, project, roleName, departments, PageRequest.of(page, size));
     }
 
     /**

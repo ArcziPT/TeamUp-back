@@ -15,6 +15,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import static com.arczipt.teamup.repo.specifications.ProjectSpecifications.*;
+
 @Service
 public class ProjectServiceImpl implements ProjectService{
 
@@ -61,6 +63,18 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public ProjectDTO findByName(String name) {
         return ProjectMapper.INSTANCE.mapToProjectDTO(projectRepository.findProjectByName(name));
+    }
+
+    @Override
+    public SearchResult<ProjectMinDTO> search(String name, ArrayList<String> members, Pageable pageable) {
+        name += '%';
+        Page<Project> page = projectRepository.findAll(withNameLike(name).and(withMembers(members)), pageable);
+
+        SearchResult<ProjectMinDTO> result = new SearchResult<>();
+        result.setTotalPages(page.getTotalPages());
+        result.setResult(page.map(ProjectMapper.INSTANCE::mapToProjectMinDTO).toList());
+
+        return result;
     }
 
     /**

@@ -96,6 +96,20 @@ public class DataLoader implements ApplicationRunner {
         user2.setUsername("new_user");
         userRepository.save(user2);
 
+        User user3 = new User();
+        user3.setRating(123);
+        hash = ((PasswordEncoder) context.getBean("passwordEncoder")).encode("pass");
+        user3.setHash(hash);
+        user3.setApplications(new ArrayList<>());
+        user3.setBriefDescription("user desc");
+        user3.setProjectInvitations(new ArrayList<>());
+        user3.setRatedBy(new ArrayList<>());
+        user3.setRatedUsers(new ArrayList<>());
+        user3.setSkills(Arrays.asList(s1, s3, s4));
+        user3.setUrls(Arrays.asList("user123.com", "github.com/user123"));
+        user3.setUsername("new_user2");
+        userRepository.save(user3);
+
         ProjectMember member = new ProjectMember();
         member.setProject(project);
         member.setRole(role);
